@@ -11,6 +11,6 @@ namespace Economie102.Classes
         public int id {  get; set; }    
         public int idEntreprise { get; set; }   
 
-        public string Poste { get; set; }   
+        public string? Poste { get; set; }   
     }
 }

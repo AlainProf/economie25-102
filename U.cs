@@ -8,7 +8,7 @@ namespace Economie102
 {
     internal class U
     {
-        public static void WL(string s)
+        public static void WL(string s= "")
         {
             Console.WriteLine(s);
         }
@@ -18,6 +18,7 @@ namespace Economie102
         }
         public static void P()
         {
+            W("\n\nAppuyez sur une touche");
             Console.ReadLine();
         }
 
@@ -38,6 +39,7 @@ namespace Economie102
             {
                 W("-");
             }
+            WL();
         }
 
     }
