@@ -17,5 +17,10 @@ namespace Economie102.Classes
             NbActionsEmises = nbA;  
         }
 
+        public double ValeurBoursiere()
+        {
+            return ValeurUnitaire * NbActionsEmises;  
+        }
+
     }
 }

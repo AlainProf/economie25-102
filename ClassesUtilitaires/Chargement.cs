@@ -12,11 +12,10 @@ namespace Economie102.ClassesUtilitaires
         public static void ChargerEntreprises()
         {
             U.Titre("Chargement des entreprises du Québec");
-            string FICHIER_ENTREPRISE = "d:\\alino\\atelier\\economie\\entreprises.csv";
-            if (File.Exists(FICHIER_ENTREPRISE))
+            if (File.Exists(U.FICHIER_ENTREPRISE))
             {
                 //Console.WriteLine("Fichier OK");
-                StreamReader reader = new StreamReader(FICHIER_ENTREPRISE);
+                StreamReader reader = new StreamReader(U.FICHIER_ENTREPRISE);
                 string? ligneCourante;
                 int numLigne = 0;
 
@@ -39,7 +38,7 @@ namespace Economie102.ClassesUtilitaires
             }
             else
             {
-                Console.WriteLine($"Erreur le fichier {FICHIER_ENTREPRISE} n'existe pas...");
+                Console.WriteLine($"Erreur le fichier {U.FICHIER_ENTREPRISE} n'existe pas...");
             }
             U.P();
         }
@@ -54,7 +53,8 @@ namespace Economie102.ClassesUtilitaires
                 return false;   
 
             int nbChamps = CompterNbChamps(infoBrute);
-            //   Stagiaire (13 info)
+            
+            // Entreprise cotée en bourse
             if (nbChamps == 6)
             {
                 string[] tabInfo = infoBrute.Split(';');
@@ -75,20 +75,33 @@ namespace Economie102.ClassesUtilitaires
                 }
             }
 
-
-
-
-
-
-
-
-
-
-
+            // Entreprise générale
+            if (nbChamps == 4)
+            {
+                string[] tabInfo = infoBrute.Split(';');
+                if (ValiderEntreprise(tabInfo, out string contexte))
+                {
+                    e = new Entreprise(int.Parse(tabInfo[0]),
+                           tabInfo[1],
+                           tabInfo[2],
+                           tabInfo[3]);
+                    return true;
+                }
+                else
+                {
+                    msgErr = $"{contexte}";
+                    return false;
+                }
+            }
             return false;
         }
 
-        static bool ValiderEntreprisePublique(string[] info, out string contexte )
+        static bool ValiderEntreprisePublique(string[] info, out string contexte)
+        {
+            contexte = "";
+            return true;
+        }
+        static bool ValiderEntreprise(string[] info, out string contexte)
         {
             contexte = "";
             return true;

@@ -14,13 +14,28 @@ namespace Economie102.Classes
         public string AnneeFondation { get; set; }
         public List<Employe> Personnel { get; set; }
 
+        static int _maxIdEnCours = 0;
 
-        public Entreprise(int i=0, string rs="inconnu", string d= "inconnu", string af="1608")
+
+        public Entreprise(int i = 0, string rs = "inconnu", string d = "inconnu", string af = "1608")
         {
             Id = i;
-            RaisonSociale = rs; 
+            if (Id > _maxIdEnCours)
+            {
+                _maxIdEnCours = Id;
+            }
+            RaisonSociale = rs;
             Domaine = d;
-            AnneeFondation = af;    
+            AnneeFondation = af;
+            Personnel = new List<Employe>();
+        }
+        public Entreprise(string rs, string d, string af)
+        {
+            _maxIdEnCours++;
+            Id = _maxIdEnCours;
+            RaisonSociale = rs;
+            Domaine = d;
+            AnneeFondation = af;
             Personnel = new List<Employe>();
         }
 
@@ -28,7 +43,7 @@ namespace Economie102.Classes
         {
 
             StringBuilder sb = new StringBuilder();
-            U.WL($"{Id.ToString().PadLeft(6)}{RaisonSociale.PadRight(45)}{Domaine.PadRight(15)}{AnneeFondation.PadLeft(6)}");
+            U.WL($"{Id.ToString().PadLeft(6)} {RaisonSociale.PadRight(45)}{Domaine.PadRight(15)}{AnneeFondation.PadLeft(6)}");
         }
     }
 }

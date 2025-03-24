@@ -8,6 +8,7 @@ namespace Economie102
 {
     internal class U
     {
+        public const string FICHIER_ENTREPRISE = "d:\\alino\\atelier\\economie\\entreprises.csv";
         public static void WL(string s= "")
         {
             Console.WriteLine(s);
@@ -16,9 +17,10 @@ namespace Economie102
         {
             Console.Write(s);
         }
-        public static void P()
+        public static void P(string msg="")
         {
-            W("\n\nAppuyez sur une touche");
+            WL("\n\n" + msg);
+            W("Appuyez sur une touche...");
             Console.ReadLine();
         }
 
@@ -40,6 +42,11 @@ namespace Economie102
                 W("-");
             }
             WL();
+        }
+
+        public static string? RL()
+        {
+            return Console.ReadLine();
         }
 
     }

@@ -13,8 +13,10 @@ namespace Economie102
             Menu mp = new("Menu principal");
             mp.AjouterOption(new MenuItem('C', "Charger les entreprises en mémoire", Chargement.ChargerEntreprises));
             mp.AjouterOption(new MenuItem('A', "Afficher les entreprises", AfficherEntreprises));
-            mp.AjouterOption(new MenuItem('P', "Calcul du PNB ", Chargement.ChargerEntreprises));
-            mp.AjouterOption(new MenuItem('J', "Ajouter une entreprise", Chargement.ChargerEntreprises));
+            mp.AjouterOption(new MenuItem('V', "Valeurs des capitalisations boursières ", ValeurEnBourse));
+            mp.AjouterOption(new MenuItem('T', "Trier les valeurs des capitalisations boursières ", TriValeurEnBourse));
+            mp.AjouterOption(new MenuItem('J', "Ajouter une entreprise", Formulaire.AjouterEntreprise));
+            mp.AjouterOption(new MenuItem('S', "Sauvergarder la liste en BD", GestionnaireBD.EnregistrerListeEntreprises));
 
             mp.Afficher();
             mp.SaisirOption();
@@ -43,6 +45,73 @@ namespace Economie102
               }
            }
            U.P();
+        }
+
+        static void ValeurEnBourse()
+        {
+            U.Titre("Capitalisation boursière des entreprises");
+            if (Producteurs.Count == 0)
+            {
+                U.WL("Aucune entreprise dans cette économie...");
+                U.P();
+                return;
+            }
+            
+            U.Titre($"{"Raison sociale".PadRight(31)} {"Valeur (en million$)".PadLeft(21)}");
+            foreach (Entreprise? e in Producteurs)
+            {
+                if (e is EntreprisePublique)
+                {
+                    EntreprisePublique? ep = e as EntreprisePublique;
+                    if (ep is null)
+                        continue;
+                    double capBours = ep.ValeurUnitaire * ep.NbActionsEmises;
+                    U.WL($"{ep.RaisonSociale.PadRight(31)} {(capBours/1000000).ToString("N2").PadLeft(21)}$");
+                }
+            }
+            U.P();
+        }
+
+        
+        static void TriValeurEnBourse()
+        {
+            U.Titre("Tri des capitalisations boursières");
+            if (Producteurs.Count == 0)
+            {
+                U.WL("Aucune entreprise dans cette économie...");
+                U.P();
+                return;
+            }
+
+            List<EntreprisePublique> listeEP = new();
+            foreach (Entreprise? e in Producteurs)
+            {
+                if (e is EntreprisePublique)
+                {
+                    EntreprisePublique? ep = e as EntreprisePublique;
+                    if (ep is null) 
+                        continue;   
+                    listeEP.Add(ep);    
+                }
+            }
+
+            listeEP.Sort(ComparerValeurBours); 
+
+            U.Titre($"{"Raison sociale".PadRight(31)} {"Valeur (en million$)".PadLeft(21)}");
+            foreach (EntreprisePublique e in listeEP)
+            {
+                  U.WL($"{e.RaisonSociale.PadRight(31)} {(e.ValeurBoursiere() / 1000000).ToString("N2").PadLeft(21)}$");
+            }
+            U.P();
+        }
+
+        static int ComparerValeurBours(EntreprisePublique e1, EntreprisePublique e2)
+        {
+            if (e1.ValeurBoursiere() > e2.ValeurBoursiere())
+                return -1;
+            if (e1.ValeurBoursiere() < e2.ValeurBoursiere())
+                return 1;
+            return 0;
         }
 
 
