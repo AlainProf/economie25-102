@@ -63,9 +63,9 @@ namespace Economie102.ClassesUtilitaires
                     e = new EntreprisePublique(int.Parse(tabInfo[0]),
                            tabInfo[1],
                            tabInfo[2],
-                           tabInfo[5],
                            double.Parse(tabInfo[3]),
-                           long.Parse(tabInfo[4]));
+                           long.Parse(tabInfo[4]), 
+                           tabInfo[5]);
                     return true;
                 }
                 else

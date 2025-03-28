@@ -8,7 +8,7 @@ namespace Economie102.Classes
 {
     internal class Entreprise
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
         public string RaisonSociale { get; set; }
         public string Domaine { get; set; }
         public string AnneeFondation { get; set; }
@@ -39,11 +39,19 @@ namespace Economie102.Classes
             Personnel = new List<Employe>();
         }
 
-        public void Afficher()
+        public void Afficher(bool tabulaire = true)
         {
-
-            StringBuilder sb = new StringBuilder();
-            U.WL($"{Id.ToString().PadLeft(6)} {RaisonSociale.PadRight(45)}{Domaine.PadRight(15)}{AnneeFondation.PadLeft(6)}");
+            if (tabulaire)
+            {
+                StringBuilder sb = new StringBuilder();
+                U.WL($"{Id.ToString().PadLeft(6)} {RaisonSociale.PadRight(45)}{Domaine.PadRight(15)}{AnneeFondation.PadLeft(6)}");
+            }
+            else
+            {
+                U.WL("Raison sociale:" + RaisonSociale);
+                U.WL("Domaine       :" + Domaine);
+                U.WL("Fondée en     :" + AnneeFondation);
+            }
         }
     }
 }

@@ -22,9 +22,9 @@ namespace Economie102.ClassesUtilitaires
             Items.Add(o);   
         }
 
-        public void Afficher()
+        public void Afficher(bool cls=true)
         {
-            U.Titre(Nom);
+            U.Titre(Nom, cls);
             foreach(MenuItem mi in Items)
             {
                 U.WL("\t" + mi.Cle + ": " + mi.Nom);

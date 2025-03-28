@@ -29,9 +29,12 @@ namespace Economie102
             Console.Clear();
             Console.WriteLine("\x1b[3J");
         }
-        public static void Titre(string t)
+        public static void Titre(string t, bool cls=true)
         {
-            U.CLS();
+            if (cls)
+            {
+                U.CLS();
+            }
             foreach (Char c in t)
             {
                 W("-");
@@ -47,6 +50,11 @@ namespace Economie102
         public static string? RL()
         {
             return Console.ReadLine();
+        }
+        public static char RC()
+        {
+            ConsoleKeyInfo cle = Console.ReadKey();
+            return cle.KeyChar;
         }
 
     }

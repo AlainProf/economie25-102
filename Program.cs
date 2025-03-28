@@ -17,6 +17,9 @@ namespace Economie102
             mp.AjouterOption(new MenuItem('T', "Trier les valeurs des capitalisations boursières ", TriValeurEnBourse));
             mp.AjouterOption(new MenuItem('J', "Ajouter une entreprise", Formulaire.AjouterEntreprise));
             mp.AjouterOption(new MenuItem('S', "Sauvergarder la liste en BD", GestionnaireBD.EnregistrerListeEntreprises));
+            mp.AjouterOption(new MenuItem('E', "Effacer la liste des entreprises en mémoire", GestionnaireBD.EffacerListeEntreprises));
+            mp.AjouterOption(new MenuItem('D', "Effacer une entreprise de la liste en mémoire", GestionnaireBD.EffacerUneEntreprise));
+            mp.AjouterOption(new MenuItem('M', "Modifier une entreprise de la liste en mémoire", Formulaire.ModifierUneEntreprise));
 
             mp.Afficher();
             mp.SaisirOption();

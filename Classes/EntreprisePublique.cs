@@ -11,10 +11,15 @@ namespace Economie102.Classes
         public double ValeurUnitaire;
         public long NbActionsEmises;
 
-        public EntreprisePublique(int i, string rs, string d, string af, double valA, long nbA): base(i,rs,d,af)
+        public EntreprisePublique(int i, string rs, string d, double valA, long nbA,string af) : base(i, rs, d, af)
         {
-            ValeurUnitaire = valA;  
-            NbActionsEmises = nbA;  
+            ValeurUnitaire = valA;
+            NbActionsEmises = nbA;
+        }
+        public EntreprisePublique(string rs, string d, double valA, long nbA, string af) : base(rs, d, af)
+        {
+            ValeurUnitaire = valA;
+            NbActionsEmises = nbA;
         }
 
         public double ValeurBoursiere()
