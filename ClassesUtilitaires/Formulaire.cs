@@ -83,49 +83,57 @@ namespace Economie102.ClassesUtilitaires
 
         public static void ModifierUneEntreprise()
         {
-            U.Titre("Modifier une entreprise en mémoire");
-            U.W("Quel est l'id de l'entreprise à modifier?");
+            U.Titre("Modifier une entreprise en mémoire", false);
+            U.W("ID: ");
             string? idAMod = U.RL();
             
             bool trouve = false;
             if (idAMod != null)
             {
-                int ipAM = int.Parse(idAMod);
-                foreach (Entreprise e in Program.Producteurs)
+
+                if (int.TryParse(idAMod, out int ipAM))
                 {
-                    if (e.Id == ipAM)
+                    foreach (Entreprise e in Program.Producteurs)
                     {
-                        trouve = true;
-                        eTmp = e;
-                        break;
+                        if (e.Id == ipAM)
+                        {
+                            trouve = true;
+                            eTmp = e;
+                            break;
+                        }
+                    }
+                    if (trouve)
+                    {
+                        FormulaireMAJEntreprise(eTmp);
+                    }
+                    else
+                    {
+                        U.P($"L'entreprise {idAMod} n'existe pas en mémoire");
                     }
                 }
-                if (trouve)
+                else
                 {
-                    FormulaireMAJEntreprise(eTmp);
+                    U.P($"L'id fourni ({idAMod}) n'est pas un entier");
                 }
             }
-            U.P($"{eTmp.RaisonSociale} a été modifié en mémoire");
         }
 
         static void FormulaireMAJEntreprise(Entreprise e)
         {
-            U.WL("\nInfos actuelles:");
             e.Afficher(false);
             U.WL("------------------------------------\n");
-            Menu mmaj = new("Quel champ voulez vous modifier?");
+            Menu mmaj = new("Quel champ voulez vous modifier?", false);
 
             mmaj.AjouterOption(new MenuItem('1', "Raison sociale", MAJRaisonSociale));
             mmaj.AjouterOption(new MenuItem('2', "Domaine d'activité", MAJDomaine));
             mmaj.AjouterOption(new MenuItem('3', "Année fondation", MAJAnFondation));
+            mmaj.AjouterOption(new MenuItem('q', "Quitter la modifcation", Quitter));
 
-            mmaj.Afficher(false);
             mmaj.SaisirOption();
         }
 
         static void MAJRaisonSociale()
         {
-            U.Titre($"Raison sociale actuelle:{eTmp.RaisonSociale}");
             U.W("Nouvelle raison sociale: ");
             string? neoRS = U.RL();
             if ( neoRS != null ) 
@@ -134,12 +142,11 @@ namespace Economie102.ClassesUtilitaires
                eTmp.RaisonSociale = neoRS;
                Program.Producteurs.Add(eTmp);
             }
-            U.P(" Modification de la raison social OK");
+            U.P($"Nouvelle raison sociale: {eTmp.RaisonSociale}");
         }
 
         static void MAJDomaine()
         {
-            U.Titre($"Domaine d'activités actuelle:{eTmp.Domaine}");
             U.W("Nouveau domaine: ");
             string? neoDom = U.RL();
             if (neoDom != null)
@@ -148,13 +155,11 @@ namespace Economie102.ClassesUtilitaires
                 eTmp.Domaine = neoDom;
                 Program.Producteurs.Add(eTmp);
             }
-            U.P(" Modification du domaine OK");
-
+            U.P($"Nouveau domaine d'activité: {eTmp.Domaine}");
         }
 
         static void MAJAnFondation()
         {
-            U.Titre($"Année de fondation actuelle:{eTmp.AnneeFondation}");
             U.W("Nouvelle année de fondation: ");
             string? neoRS = U.RL();
             if (neoRS != null)
@@ -163,7 +168,12 @@ namespace Economie102.ClassesUtilitaires
                 eTmp.AnneeFondation = neoRS;
                 Program.Producteurs.Add(eTmp);
             }
-            U.P(" Modification de l'année de fondation OK");
+            U.P($"Nouvelle année de fondation : {eTmp.AnneeFondation}");
+        }
+
+
+        static void Quitter()
+        {
         }
     }
 }

@@ -9,6 +9,8 @@ namespace Economie102
     internal class U
     {
         public const string FICHIER_ENTREPRISE = "d:\\alino\\atelier\\economie\\entreprises.csv";
+        public const string FICHIER_EMPLOYES = "d:\\alino\\atelier\\economie\\employes.csv";
+        
         public static void WL(string s= "")
         {
             Console.WriteLine(s);

@@ -6,12 +6,18 @@ namespace Economie102
 {
     internal class Program
     {
-        static public List<Entreprise> Producteurs { get; set; } = new List<Entreprise>();  
+        static public List<Entreprise> Producteurs { get; set; } = new List<Entreprise>();
+        static public List<EmpHoraire> Travailleurs { get; set; } = new();
+
+        
         static void Main(string[] args)
         {
             U.Titre("Analyse économique gr 102");
             Menu mp = new("Menu principal");
-            mp.AjouterOption(new MenuItem('C', "Charger les entreprises en mémoire", Chargement.ChargerEntreprises));
+            mp.AjouterOption(new MenuItem('C', "Charger les entreprises", Chargement.ChargerEntreprises));
+            mp.AjouterOption(new MenuItem('P', "Charger les employés", Chargement.ChargerEmployes));
+            mp.AjouterOption(new MenuItem('R', "Récuperation des employés par leurs entreprises", RecupEmpEntrep));
+            mp.AjouterOption(new MenuItem('U', "Afficher Une entreprise", AfficherUneEntreprise));
             mp.AjouterOption(new MenuItem('A', "Afficher les entreprises", AfficherEntreprises));
             mp.AjouterOption(new MenuItem('V', "Valeurs des capitalisations boursières ", ValeurEnBourse));
             mp.AjouterOption(new MenuItem('T', "Trier les valeurs des capitalisations boursières ", TriValeurEnBourse));
@@ -21,7 +27,6 @@ namespace Economie102
             mp.AjouterOption(new MenuItem('D', "Effacer une entreprise de la liste en mémoire", GestionnaireBD.EffacerUneEntreprise));
             mp.AjouterOption(new MenuItem('M', "Modifier une entreprise de la liste en mémoire", Formulaire.ModifierUneEntreprise));
 
-            mp.Afficher();
             mp.SaisirOption();
 
 
@@ -117,7 +122,37 @@ namespace Economie102
             return 0;
         }
 
+        static void RecupEmpEntrep()
+        {
+            U.Titre("chargement en mémoire des employés par leurs entreprises");
+            foreach(Entreprise entrep in Producteurs)
+            {
+                entrep.RecupererPersonnel();    
+            }
+            U.P();
+        }
+
+        static void AfficherUneEntreprise()
+        {
+            U.Titre("Info sur une entreprise");
+
+            U.W("ID:");
+            string? idStr = U.RL();
+            int idEntrep = 0;
 
 
+            if (idStr != null ) 
+                idEntrep = int.Parse(idStr);
+
+            foreach (Entreprise entrep in Producteurs)
+            {
+                if (idEntrep == entrep.Id)
+                {
+                    entrep.Afficher(false);
+                }
+            }
+            U.P();
+        }
+        
     }
 }

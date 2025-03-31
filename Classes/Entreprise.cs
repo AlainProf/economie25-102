@@ -48,9 +48,31 @@ namespace Economie102.Classes
             }
             else
             {
-                U.WL("Raison sociale:" + RaisonSociale);
-                U.WL("Domaine       :" + Domaine);
-                U.WL("Fondée en     :" + AnneeFondation);
+                U.WL( "Raison sociale : " + RaisonSociale);
+                U.WL( "Domaine        : " + Domaine);
+                U.WL( "Fondée en      : " + AnneeFondation);
+                U.WL($"Emploie        : {Personnel.Count} travaileurs");
+
+                U.W("Voulez voir les employés? (o/n)");
+                char option = U.RC();
+                if (option == 'O')
+                {
+                    foreach(Employe emp in Personnel)
+                    {
+                        emp.Afficher();
+                    }
+                }
+            }
+        }
+
+        public void RecupererPersonnel()
+        {
+            foreach(Employe e in Program.Travailleurs)
+            {
+                if (e.idEntreprise == Id)
+                {
+                    Personnel.Add(e);
+                }
             }
         }
     }

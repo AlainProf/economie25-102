@@ -11,6 +11,20 @@ namespace Economie102.Classes
         public int id {  get; set; }    
         public int idEntreprise { get; set; }   
 
-        public string? Poste { get; set; }   
+        public string? Poste { get; set; }
+
+        public Employe()
+        {
+            Nom = "incognito";
+            Naissance = DateTime.MaxValue;
+            Genre = "m";
+            id = 0;
+            idEntreprise = 0;
+        }
+        public Employe(string n, DateTime nais, string g, int idEmp, int idEntrep): base(n, nais, g)
+        {
+            id = idEmp;
+            idEntreprise = idEntrep;
+        }
     }
 }
