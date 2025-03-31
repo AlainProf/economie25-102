@@ -178,9 +178,9 @@ namespace Economie102.ClassesUtilitaires
                 string[] tabInfo = infoBrute.Split(';');
                 if (ValiderEmployeHoraire(tabInfo, out string contexte))
                 {
-                    //string pattern = "YYYY-MM-dd";
+                    string pattern = "yyyy-MM-dd";
                     DateTime parsedDate = DateTime.Now;
-                    //if (DateTime.TryParseExact(tabInfo[4], pattern, null,DateTimeStyles.None, out parsedDate))
+                    if (DateTime.TryParseExact(tabInfo[4], pattern, null,DateTimeStyles.None, out parsedDate))
                     e = new EmpHoraire(tabInfo[2],
                                        parsedDate,
                                        tabInfo[3],
