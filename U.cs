@@ -10,7 +10,8 @@ namespace Economie102
     {
         public const string FICHIER_ENTREPRISE = "d:\\alino\\atelier\\economie\\entreprises.csv";
         public const string FICHIER_EMPLOYES = "d:\\alino\\atelier\\economie\\employes.csv";
-        
+        public const string FICHIER_FEUILLESTEMPS = "d:\\alino\\atelier\\economie\\feuillesTemps.csv";
+
         public static void WL(string s= "")
         {
             Console.WriteLine(s);

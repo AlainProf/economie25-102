@@ -25,5 +25,10 @@ namespace Economie102.Classes
         {
             TauxHoraire = th ;
         }
+
+        public override void Afficher()
+        {
+            U.WL($"{id} {Nom} {TauxHoraire}$");
+        }
     }
 }

@@ -41,7 +41,7 @@ namespace Economie102.ClassesUtilitaires
             {
                 Console.WriteLine($"Erreur le fichier {U.FICHIER_ENTREPRISE} n'existe pas...");
             }
-            U.P();
+            //U.P();
         }
 
         static bool ParsingEntreprise(string? infoBrute, out Entreprise e, out string msgErr)
@@ -159,7 +159,7 @@ namespace Economie102.ClassesUtilitaires
             {
                 Console.WriteLine($"Erreur le fichier {U.FICHIER_EMPLOYES} n'existe pas...");
             }
-            U.P();
+            //U.P();
         }
 
         static bool ParsingEmployeHoraire(string? infoBrute, out EmpHoraire e, out string msgErr)
@@ -203,6 +203,75 @@ namespace Economie102.ClassesUtilitaires
             contexte = "";
             return true;
         }
+        static bool ValiderFDT(string[] info, out string contexte)
+        {
+            contexte = "";
+            return true;
+        }
 
+
+        public static void ChargerFeuillesTemps()
+        {
+            if (File.Exists(U.FICHIER_FEUILLESTEMPS))
+            {
+                //Console.WriteLine("Fichier OK");
+                StreamReader reader = new StreamReader(U.FICHIER_FEUILLESTEMPS);
+                string? ligneCourante;
+                int numLigne = 0;
+
+                while (reader.Peek() > -1)
+                {
+                    numLigne++;
+                    ligneCourante = reader.ReadLine();
+
+                    if (ParsingFDT(ligneCourante, out FeuilleTemps ft, out string msgErr))
+                    {
+                        Program.Horodateurs.Add(ft);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Erreur à la ligne {numLigne}, {msgErr}");
+                    }
+                }
+                Console.WriteLine($"Chargement de {Program.Horodateurs.Count} feuilles de temps");
+                reader.Close();
+            }
+            else
+            {
+                Console.WriteLine($"Erreur le fichier {U.FICHIER_EMPLOYES} n'existe pas...");
+            }
+            //U.P();
+        }
+
+        static bool ParsingFDT(string? infoBrute, out FeuilleTemps ft, out string msgErr)
+        {
+            ft = new FeuilleTemps();
+            msgErr = "";
+
+            if (infoBrute == null)
+                return false;
+
+            int nbChamps = CompterNbChamps(infoBrute);
+
+            // Entreprise cotée en bourse
+            if (nbChamps == 4)
+            {
+                string[] tabInfo = infoBrute.Split(';');
+                if (ValiderFDT(tabInfo, out string contexte))
+                {
+                    ft = new FeuilleTemps(int.Parse(tabInfo[0]),
+                                          int.Parse(tabInfo[1]),
+                                          int.Parse(tabInfo[2]),
+                                          int.Parse(tabInfo[3]));
+                    return true;
+                }
+                else
+                {
+                    msgErr = $"{contexte}";
+                    return false;
+                }
+            }
+            return false;
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace Economie102.Classes
             if (tabulaire)
             {
                 StringBuilder sb = new StringBuilder();
-                U.WL($"{Id.ToString().PadLeft(6)} {RaisonSociale.PadRight(45)}{Domaine.PadRight(15)}{AnneeFondation.PadLeft(6)}");
+                U.WL($"{Id.ToString().PadLeft(6)} {RaisonSociale.PadRight(45)}{Domaine.PadRight(15)}{AnneeFondation.PadLeft(6)}{Personnel.Count.ToString().PadLeft(8)}");
             }
             else
             {
@@ -52,10 +52,11 @@ namespace Economie102.Classes
                 U.WL( "Domaine        : " + Domaine);
                 U.WL( "Fondée en      : " + AnneeFondation);
                 U.WL($"Emploie        : {Personnel.Count} travaileurs");
+                U.WL($"Salaire/h moyen: {CalculerSalMoy().ToString("N2")}");
 
                 U.W("Voulez voir les employés? (o/n)");
                 char option = U.RC();
-                if (option == 'O')
+                if (option == 'o')
                 {
                     foreach(Employe emp in Personnel)
                     {
@@ -63,6 +64,29 @@ namespace Economie102.Classes
                     }
                 }
             }
+        }
+
+        double CalculerSalMoy()
+        {
+            double salCum = 0;
+            int nbEmp = 0;
+            foreach(Employe e in Personnel)
+            {
+                if (e is EmpHoraire)
+                {
+                    nbEmp++;
+                    EmpHoraire? eh = e as EmpHoraire;
+                    if (eh != null)
+                    {
+                        salCum += eh.TauxHoraire;
+                    }
+                }
+            }
+            if (nbEmp > 0)
+            {
+                return salCum / nbEmp;
+            }
+            return 0;   
         }
 
         public void RecupererPersonnel()

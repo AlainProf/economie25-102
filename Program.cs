@@ -8,15 +8,23 @@ namespace Economie102
     {
         static public List<Entreprise> Producteurs { get; set; } = new List<Entreprise>();
         static public List<EmpHoraire> Travailleurs { get; set; } = new();
+        static public List<FeuilleTemps> Horodateurs { get; set; } = new();
 
-        
+
         static void Main(string[] args)
         {
+            Chargement.ChargerEntreprises();
+            Chargement.ChargerEmployes();
+            RecupEmpEntrep();
+            Chargement.ChargerFeuillesTemps();
+
             U.Titre("Analyse économique gr 102");
             Menu mp = new("Menu principal");
-            mp.AjouterOption(new MenuItem('C', "Charger les entreprises", Chargement.ChargerEntreprises));
-            mp.AjouterOption(new MenuItem('P', "Charger les employés", Chargement.ChargerEmployes));
-            mp.AjouterOption(new MenuItem('R', "Récuperation des employés par leurs entreprises", RecupEmpEntrep));
+            /*            mp.AjouterOption(new MenuItem('C', "Charger les entreprises", Chargement.ChargerEntreprises));
+                        mp.AjouterOption(new MenuItem('P', "Charger les employés", Chargement.ChargerEmployes));
+                        mp.AjouterOption(new MenuItem('R', "Récuperation des employés par leurs entreprises", RecupEmpEntrep));
+             */
+            mp.AjouterOption(new MenuItem('C', "Calculer la paye d'une entreprise", CalculerPaye));
             mp.AjouterOption(new MenuItem('U', "Afficher Une entreprise", AfficherUneEntreprise));
             mp.AjouterOption(new MenuItem('A', "Afficher les entreprises", AfficherEntreprises));
             mp.AjouterOption(new MenuItem('V', "Valeurs des capitalisations boursières ", ValeurEnBourse));
@@ -43,11 +51,10 @@ namespace Economie102
            else
            {
                 U.WL($"Id Raison Sociale Domaine An F");
-                U.WL($"{"ID".PadRight(6)}{"Nom".PadRight(45)}{"Domaine acti".PadRight(15)}{"An Fo".PadLeft(6)}\n" +
-                    "______________________________________________________________________");
+                U.WL($"{"ID".PadRight(6)}{"Nom".PadRight(45)}{"Domaine acti".PadRight(15)}{"An Fo".PadLeft(6)}{"Nb Trav".PadLeft(8)}\n" +
+                    "___________________________________________________________________________________________________");
 
-
-                foreach (Entreprise e in Producteurs)
+              foreach (Entreprise e in Producteurs)
               {
                  e.Afficher();
               }
@@ -129,7 +136,7 @@ namespace Economie102
             {
                 entrep.RecupererPersonnel();    
             }
-            U.P();
+            U.P($"{"Chargements de la BD effectué"}");
         }
 
         static void AfficherUneEntreprise()
@@ -153,6 +160,57 @@ namespace Economie102
             }
             U.P();
         }
-        
+
+        static void CalculerPaye()
+        {
+            U.Titre("Calcule de la paye d'une entreprise");
+
+            U.W("Id de l'entrep:");
+            string? idEntrepStr = U.RL();
+            int idEntrep = 0;
+            if (idEntrepStr != null)
+            {
+                idEntrep = int.Parse(idEntrepStr);
+            }
+
+            U.W("Période visée:");
+            string?  perStr = U.RL();
+            int periode = 0;
+            if (perStr != null)
+            {
+                periode = int.Parse(perStr);
+            }
+
+            foreach(Entreprise e  in Producteurs)
+            {
+                if (e.Id == idEntrep)
+                {
+                    foreach (Employe emp in e.Personnel)
+                    {
+                        if (emp is EmpHoraire)
+                        {
+                            foreach (FeuilleTemps fdt in Horodateurs)
+                            {
+                                if (fdt.Periode == periode)
+                                {
+                                    if (fdt.IdEmploye == emp.id)
+                                    {
+                                        EmpHoraire? ep = emp as EmpHoraire;
+                                        double sal = 0;
+                                        if (ep != null)
+                                        {
+                                            sal = fdt.NbHeure * ep.TauxHoraire;
+                                            U.WL($"{ep.id.ToString().PadLeft(6)} {ep.Nom.PadRight(40)} {sal.ToString("N2").PadLeft(10)}");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            U.P();
+        }
+
     }
 }
